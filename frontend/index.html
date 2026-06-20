@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFood — I.E. Normal Superior Montes de María</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ======================================================
+     PÁGINA: LOGIN
+====================================================== -->
+<div id="page-login" class="page active">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon"><i class="ti ti-leaf"></i></div>
+        <div class="auth-logo-name">SmartFood</div>
+        <div class="auth-logo-sub">I.E. Normal Superior Montes de María</div>
+      </div>
+      <h2 class="auth-title">Iniciar sesión</h2>
+      <div id="login-toast"></div>
+      <form onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="login-correo" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="login-pass" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" id="btn-login" class="btn btn-primary btn-block btn-lg">
+          <i class="ti ti-login"></i> Ingresar
+        </button>
+      </form>
+      <div class="auth-footer">
+        ¿No tienes cuenta? <button onclick="showPage('register')">Regístrate aquí</button>
+      </div>
+      <div class="demo-box">
+        <strong>Cuentas de prueba:</strong><br>
+        Admin: <code>admin@smartfood.co</code> / <code>admin123</code><br>
+        Estudiante: <code>maria@smartfood.co</code> / <code>est123</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+     PÁGINA: REGISTRO
+====================================================== -->
+<div id="page-register" class="page">
+  <div class="auth-container">
+    <div class="auth-card" style="max-width:520px">
+      <div class="auth-logo">
+        <div class="auth-logo-icon"><i class="ti ti-leaf"></i></div>
+        <div class="auth-logo-name">SmartFood</div>
+        <div class="auth-logo-sub">Crear cuenta nueva</div>
+      </div>
+      <h2 class="auth-title">Registro de estudiante</h2>
+      <div id="reg-toast"></div>
+      <form onsubmit="doRegister(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre completo *</label>
+            <input type="text" id="reg-nombre" placeholder="Ej: Juan Pérez" required>
+          </div>
+          <div class="form-group">
+            <label>Correo electrónico *</label>
+            <input type="email" id="reg-correo" placeholder="correo@ejemplo.com" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Contraseña *</label>
+            <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" required>
+          </div>
+          <div class="form-group">
+            <label>Confirmar contraseña *</label>
+            <input type="password" id="reg-pass2" placeholder="Repite tu contraseña" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ciudad</label>
+            <input type="text" id="reg-ciudad" value="San Juan de Nepomuceno">
+          </div>
+          <div class="form-group">
+            <label>Curso / Grado *</label>
+            <select id="reg-curso" required>
+              <option value="">Selecciona tu grado...</option>
+              <option>6°A</option><option>6°B</option>
+              <option>7°A</option><option>7°B</option>
+              <option>8°A</option><option>8°B</option>
+              <option>9°A</option><option>9°B</option>
+              <option>10°A</option><option>10°B</option>
+              <option>11°A</option><option>11°B</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Alergias alimenticias</label>
+          <input type="text" id="reg-alergias" placeholder="Ej: mariscos, gluten, lactosa (opcional)">
+        </div>
+        <div class="form-group">
+          <label>Preferencias alimenticias</label>
+          <select id="reg-prefs">
+            <option value="ninguna">Sin preferencias especiales</option>
+            <option value="vegetariano">Vegetariano</option>
+            <option value="vegano">Vegano</option>
+            <option value="sin-gluten">Sin gluten</option>
+          </select>
+        </div>
+        <button type="submit" id="btn-register" class="btn btn-primary btn-block btn-lg">
+          <i class="ti ti-user-plus"></i> Crear cuenta
+        </button>
+      </form>
+      <div class="auth-footer">
+        ¿Ya tienes cuenta? <button onclick="showPage('login')">Inicia sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+     PÁGINA: ESTUDIANTE
+====================================================== -->
+<div id="page-estudiante" class="page">
+  <nav class="navbar">
+    <div class="navbar-brand"><i class="ti ti-leaf"></i> SmartFood</div>
+    <div class="navbar-right">
+      <div class="navbar-notif" onclick="goSub('notifs')" title="Notificaciones">
+        <i class="ti ti-bell"></i>
+        <span class="notif-badge" id="notif-count" style="display:none">0</span>
+      </div>
+      <div class="navbar-avatar" id="stu-avatar">?</div>
+      <span class="navbar-name" id="stu-name"></span>
+      <button class="btn btn-sm" onclick="logout()"><i class="ti ti-logout"></i> Salir</button>
+    </div>
+  </nav>
+  <div class="layout">
+    <aside class="sidebar">
+      <button class="sidebar-link" data-goto="dashboard" onclick="goSub('dashboard')"><i class="ti ti-home"></i> Inicio</button>
+      <button class="sidebar-link" data-goto="menu" onclick="goSub('menu')"><i class="ti ti-tool"></i> Menú semanal</button>
+      <button class="sidebar-link" data-goto="confirmacion" onclick="goSub('confirmacion')"><i class="ti ti-check"></i> Confirmar asistencia</button>
+      <button class="sidebar-link" data-goto="historial" onclick="goSub('historial')"><i class="ti ti-history"></i> Mi historial</button>
+      <button class="sidebar-link" data-goto="notifs" onclick="goSub('notifs')"><i class="ti ti-bell"></i> Notificaciones</button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" data-goto="perfil" onclick="goSub('perfil')"><i class="ti ti-user"></i> Mi perfil</button>
+      <button class="sidebar-link" onclick="logout()"><i class="ti ti-logout"></i> Cerrar sesión</button>
+    </aside>
+    <main class="main-content">
+
+      <!-- Dashboard -->
+      <div data-sub="dashboard" style="display:none">
+        <div class="page-header">
+          <h1>Bienvenido, <span id="stu-welcome-name"></span> 👋</h1>
+          <p id="stu-fecha"></p>
+        </div>
+        <div id="toast-container" style="display:none"></div>
+        <div id="adm-toast" style="display:none"></div>
+        <div id="dash-menu-area">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-calendar"></i> Menú de hoy — <span id="dash-menu-fecha"></span> &nbsp;<span id="dash-estado"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Entrada</span><span class="menu-item-val" id="dash-entrada"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Plato principal</span><span class="menu-item-val" id="dash-principal"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Bebida</span><span class="menu-item-val" id="dash-bebida"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Postre</span><span class="menu-item-val" id="dash-postre"></span></div>
+            <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-success" onclick="goSub('confirmacion')"><i class="ti ti-check"></i> Ir a confirmar asistencia</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-users"></i> Confirmaciones de hoy</div>
+            <p style="font-size:13px;color:var(--text-sec);margin-bottom:6px">Estudiantes confirmados: <strong id="dash-conteo">—</strong></p>
+            <div class="progress"><div class="progress-bar success" id="dash-prog" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menú semanal -->
+      <div data-sub="menu" style="display:none">
+        <div class="page-header"><h1><i class="ti ti-tool" style="color:var(--primary)"></i> Menú semanal</h1><p>Menú programado del comedor para esta semana</p></div>
+        <div id="menu-semana-grid"></div>
+      </div>
+
+      <!-- Confirmación -->
+      <div data-sub="confirmacion" style="display:none">
+        <div class="page-header"><h1><i class="ti ti-check" style="color:var(--primary)"></i> Confirmar asistencia</h1><p>Indica si vas a comer en el comedor</p></div>
+        <div id="conf-toast" style="display:none"></div>
+        <div id="conf-menu-area">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-calendar"></i> Menú — <span id="conf-fecha"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Entrada</span><span class="menu-item-val" id="conf-entrada"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Plato principal</span><span class="menu-item-val" id="conf-principal"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Bebida</span><span class="menu-item-val" id="conf-bebida"></span></div>
+            <div class="menu-item"><span class="menu-item-label">Postre</span><span class="menu-item-val" id="conf-postre"></span></div>
+          </div>
+          <div class="card">
+            <p id="conf-estado-label" style="font-size:13px;color:var(--text-sec);margin-bottom:14px">Estado: <strong>Sin confirmar</strong></p>
+            <button class="confirm-big" id="btn-confirmar" onclick="accionConfirmar()">
+              <i class="ti ti-check"></i> Confirmar asistencia para mañana
+            </button>
+            <button class="confirm-big" id="btn-cancelar" onclick="accionCancelar()">
+              <i class="ti ti-x"></i> No asistiré mañana
+            </button>
+            <div style="margin-top:14px">
+              <p style="font-size:13px;color:var(--text-sec);margin-bottom:6px">Confirmados hoy: <strong id="conf-conteo-num">—</strong></p>
+              <div class="progress"><div class="progress-bar" id="conf-prog" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historial -->
+      <div data-sub="historial" style="display:none">
+        <div class="page-header"><h1><i class="ti ti-history" style="color:var(--primary)"></i> Mi historial</h1><p>Registro de todas tus confirmaciones</p></div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Fecha</th><th>Menú</th><th>Estado</th><th>Registrado</th></tr></thead>
+              <tbody id="historial-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-sec)">Cargando...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notificaciones -->
+      <div data-sub="notifs" style="display:none">
+        <div class="page-header"><h1><i class="ti ti-bell" style="color:var(--primary)"></i> Notificaciones</h1><p>Todos los avisos del sistema</p></div>
+        <div class="card" id="notifs-lista"><p style="color:var(--text-sec)">Cargando...</p></div>
+      </div>
+
+      <!-- Perfil -->
+      <div data-sub="perfil" style="display:none">
+        <div class="page-header"><h1><i class="ti ti-user" style="color:var(--primary)"></i> Mi perfil</h1><p>Gestiona tu información personal</p></div>
+        <div id="perfil-toast" style="display:none"></div>
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+            <div id="p-avatar" style="width:60px;height:60px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--primary)">?</div>
+            <div><h2 id="p-nombre-display" style="font-size:16px;font-weight:600"></h2><p style="font-size:13px;color:var(--text-sec)">Estudiante</p></div>
+          </div>
+          <form onsubmit="guardarPerfil(event)">
+            <div class="form-row">
+              <div class="form-group"><label>Nombre completo</label><input type="text" id="p-nombre"></div>
+              <div class="form-group"><label>Correo electrónico</label><input type="email" id="p-correo" readonly style="opacity:.7"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Ciudad</label><input type="text" id="p-ciudad"></div>
+              <div class="form-group"><label>Curso</label>
+                <select id="p-curso">
+                  <option>6°A</option><option>6°B</option><option>7°A</option><option>7°B</option>
+                  <option>8°A</option><option>8°B</option><option>9°A</option><option>9°B</option>
+                  <option>10°A</option><option>10°B</option><option>11°A</option><option>11°B</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Alergias</label><input type="text" id="p-alergias"></div>
+              <div class="form-group"><label>Preferencias</label>
+                <select id="p-prefs">
+                  <option value="ninguna">Sin preferencias especiales</option>
+                  <option value="vegetariano">Vegetariano</option>
+                  <option value="vegano">Vegano</option>
+                  <option value="sin-gluten">Sin gluten</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy"></i> Guardar cambios</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-lock"></i> Cambiar contraseña</div>
+          <form onsubmit="cambiarPassword(event)">
+            <div class="form-row">
+              <div class="form-group"><label>Contraseña actual</label><input type="password" id="p-pass-actual" placeholder="••••••••"></div>
+              <div class="form-group"><label>Nueva contraseña</label><input type="password" id="p-pass-nuevo" placeholder="Mínimo 6 caracteres"></div>
+            </div>
+            <div class="form-group" style="max-width:260px"><label>Confirmar nueva contraseña</label><input type="password" id="p-pass-nuevo2" placeholder="Repite la nueva contraseña"></div>
+            <button type="submit" class="btn btn-warning"><i class="ti ti-lock"></i> Actualizar contraseña</button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ======================================================
+     PÁGINA: ADMINISTRADOR
+====================================================== -->
+<div id="page-admin" class="page">
+  <nav class="navbar">
+    <div class="navbar-brand"><i class="ti ti-leaf"></i> SmartFood <span class="badge badge-amber" style="margin-left:6px;font-size:10px">Admin</span></div>
+    <div class="navbar-right">
+      <div class="navbar-avatar" style="background:#FAEEDA;color:#854F0B" id="admin-avatar">A</div>
+      <span class="navbar-name" id="admin-name"></span>
+      <button class="btn btn-sm" onclick="logout()"><i class="ti ti-logout"></i> Salir</button>
+    </div>
+  </nav>
+  <div class="layout">
+    <aside class="sidebar">
+      <button class="sidebar-link" data-admin-goto="panel" onclick="goAdmin('panel')"><i class="ti ti-dashboard"></i> Panel</button>
+      <button class="sidebar-link" data-admin-goto="usuarios" onclick="goAdmin('usuarios')"><i class="ti ti-users"></i> Usuarios</button>
+      <button class="sidebar-link" data-admin-goto="menus" onclick="goAdmin('menus')"><i class="ti ti-tool"></i> Menús</button>
+      <button class="sidebar-link" data-admin-goto="confirmaciones" onclick="goAdmin('confirmaciones')"><i class="ti ti-check"></i> Confirmaciones</button>
+      <button class="sidebar-link" data-admin-goto="reportes" onclick="goAdmin('reportes')"><i class="ti ti-chart-bar"></i> Reportes</button>
+      <button class="sidebar-link" data-admin-goto="notifs" onclick="goAdmin('notifs')"><i class="ti ti-bell"></i> Notificaciones</button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" onclick="logout()"><i class="ti ti-logout"></i> Cerrar sesión</button>
+    </aside>
+    <main class="main-content">
+      <div id="adm-toast" style="display:none"></div>
+
+      <!-- Panel -->
+      <div data-admin="panel" style="display:none">
+        <div class="page-header"><h1>Panel de control</h1><p id="adm-fecha"></p></div>
+        <div id="adm-alerta"></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-n" id="adm-total">—</div><div class="stat-l">Total estudiantes</div></div>
+          <div class="stat-card green"><div class="stat-n" id="adm-confirmados">—</div><div class="stat-l">Confirmados hoy</div></div>
+          <div class="stat-card red"><div class="stat-n" id="adm-cancelados">—</div><div class="stat-l">Cancelados hoy</div></div>
+          <div class="stat-card amber"><div class="stat-n" id="adm-pendientes">—</div><div class="stat-l">Sin responder</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i> Confirmaciones de hoy</div>
+          <p style="font-size:13px;color:var(--text-sec);margin-bottom:8px">Progreso: <strong id="adm-pct">—</strong></p>
+          <div class="progress" style="height:12px"><div class="progress-bar success" id="adm-prog" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Usuarios -->
+      <div data-admin="usuarios" style="display:none">
+        <div class="section-header">
+          <div class="page-header" style="margin-bottom:0"><h1>Usuarios</h1><p>Gestión de todos los estudiantes y administradores</p></div>
+          <button class="btn btn-primary" onclick="abrirModalUsuario()"><i class="ti ti-plus"></i> Nuevo usuario</button>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input type="text" id="buscar-usuario" placeholder="Buscar por nombre o correo..." style="flex:1;min-width:180px;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);font-family:var(--font);font-size:14px" oninput="cargarUsuarios()">
+            <select id="filtro-rol" onchange="cargarUsuarios()" style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);font-family:var(--font);font-size:14px">
+              <option value="">Todos los roles</option>
+              <option value="estudiante">Estudiante</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Curso</th><th>Registro</th><th>Acciones</th></tr></thead>
+              <tbody id="usuarios-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menús -->
+      <div data-admin="menus" style="display:none">
+        <div class="section-header">
+          <div class="page-header" style="margin-bottom:0"><h1>Menús</h1><p>Crea y edita los menús del comedor</p></div>
+          <button class="btn btn-primary" onclick="abrirModalMenu()"><i class="ti ti-plus"></i> Nuevo menú</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Fecha</th><th>Entrada</th><th>Plato principal</th><th>Bebida</th><th>Postre</th><th>Acciones</th></tr></thead>
+              <tbody id="menus-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmaciones -->
+      <div data-admin="confirmaciones" style="display:none">
+        <div class="page-header"><h1>Confirmaciones del día</h1><p>Estado de asistencia de todos los estudiantes</p></div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Estudiante</th><th>Curso</th><th>Estado</th><th>Registrado</th></tr></thead>
+              <tbody id="adm-conf-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reportes -->
+      <div data-admin="reportes" style="display:none">
+        <div class="section-header">
+          <div class="page-header" style="margin-bottom:0"><h1>Reportes</h1><p>Estadísticas del comedor</p></div>
+          <button class="btn btn-primary" onclick="exportarCSV()"><i class="ti ti-download"></i> Exportar CSV</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-n" id="rep-total">—</div><div class="stat-l">Total estudiantes</div></div>
+          <div class="stat-card green"><div class="stat-n" id="rep-conf">—</div><div class="stat-l">Confirmados hoy</div></div>
+          <div class="stat-card red"><div class="stat-n" id="rep-canc">—</div><div class="stat-l">Cancelados hoy</div></div>
+          <div class="stat-card blue"><div class="stat-n" id="rep-pct">—</div><div class="stat-l">% Asistencia</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i> Confirmaciones por día — esta semana</div>
+          <div class="chart-bars" id="chart-semana"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-dots"></i> Confirmaciones por curso</div>
+          <div id="chart-cursos"></div>
+        </div>
+      </div>
+
+      <!-- Notificaciones admin -->
+      <div data-admin="notifs" style="display:none">
+        <div class="page-header"><h1>Notificaciones</h1><p>Envía avisos masivos a estudiantes</p></div>
+        <div id="notif-toast" style="display:none"></div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-send"></i> Enviar notificación masiva</div>
+          <form onsubmit="enviarNotifMasiva(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Destinatarios</label>
+                <select id="notif-dest">
+                  <option value="todos">Todos los usuarios</option>
+                  <option value="estudiantes">Solo estudiantes</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Tipo</label>
+                <select id="notif-tipo">
+                  <option value="recordatorio">Recordatorio</option>
+                  <option value="menu">Nuevo menú</option>
+                  <option value="sistema">Sistema</option>
+                  <option value="cancelacion">Cancelación</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Título del mensaje</label>
+              <input type="text" id="notif-titulo" placeholder="Ej: Recordatorio de confirmación">
+            </div>
+            <div class="form-group">
+              <label>Mensaje</label>
+              <textarea id="notif-mensaje" placeholder="Escribe el mensaje para los estudiantes..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="ti ti-send"></i> Enviar a todos</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-history"></i> Notificaciones recibidas</div>
+          <div id="adm-notifs-hist"><p style="color:var(--text-sec)">Cargando...</p></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ====== MODAL: USUARIO ====== -->
+<div id="modal-usuario" class="modal-overlay" style="display:none" onclick="if(event.target===this)cerrarModalUsuario()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-usuario-titulo">Nuevo usuario</h3>
+      <button class="btn btn-sm btn-icon" onclick="cerrarModalUsuario()"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="modal-usuario-toast" style="display:none"></div>
+    <form onsubmit="guardarUsuario(event)">
+      <div class="form-row">
+        <div class="form-group"><label>Nombre completo *</label><input type="text" id="nu-nombre" placeholder="Nombre completo" required></div>
+        <div class="form-group"><label>Correo *</label><input type="email" id="nu-correo" placeholder="correo@ejemplo.com" required></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Contraseña</label><input type="password" id="nu-pass" placeholder="Contraseña"></div>
+        <div class="form-group"><label>Rol</label>
+          <select id="nu-rol"><option value="estudiante">Estudiante</option><option value="admin">Administrador</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Curso</label>
+          <select id="nu-curso"><option value="">N/A</option><option>6°A</option><option>6°B</option><option>7°A</option><option>7°B</option><option>8°A</option><option>9°A</option><option>10°A</option><option>11°A</option><option>11°B</option></select>
+        </div>
+        <div class="form-group"><label>Alergias</label><input type="text" id="nu-alergias" placeholder="Opcional"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy"></i> Guardar</button>
+        <button type="button" class="btn" onclick="cerrarModalUsuario()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ====== MODAL: MENÚ ====== -->
+<div id="modal-menu" class="modal-overlay" style="display:none" onclick="if(event.target===this)cerrarModalMenu()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-menu-titulo">Nuevo menú</h3>
+      <button class="btn btn-sm btn-icon" onclick="cerrarModalMenu()"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="modal-menu-toast" style="display:none"></div>
+    <form onsubmit="guardarMenu(event)">
+      <div class="form-row">
+        <div class="form-group"><label>Fecha *</label><input type="date" id="mf-fecha" required></div>
+        <div class="form-group"><label>Entrada *</label><input type="text" id="mf-entrada" placeholder="Ej: Sopa de lentejas" required></div>
+      </div>
+      <div class="form-group"><label>Plato principal *</label><input type="text" id="mf-principal" placeholder="Ej: Arroz con pollo guisado" required></div>
+      <div class="form-row">
+        <div class="form-group"><label>Bebida *</label><input type="text" id="mf-bebida" placeholder="Ej: Jugo de maracuyá" required></div>
+        <div class="form-group"><label>Postre *</label><input type="text" id="mf-postre" placeholder="Ej: Gelatina de fresa" required></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy"></i> Guardar menú</button>
+        <button type="button" class="btn" onclick="cerrarModalMenu()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/api.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/estudiante.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
