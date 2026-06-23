@@ -49,7 +49,7 @@ router.get('/historial', verificarToken, async (req, res) => {
     const id_estudiante = req.usuario.id_estudiante;
     const historial = await Confirmacion.findAll({
       where: { id_estudiante },
-      include: [{ model: Menu, as: undefined, attributes: ['fecha','plato_principal','entrada','bebida'] }],
+      include: [{ model: Menu, attributes: ['fecha','plato_principal','entrada','bebida'] }],
       order: [['fecha_confirmacion', 'DESC']],
       limit: 30
     });
@@ -67,10 +67,14 @@ router.get('/conteo/:id_menu', verificarToken, async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// GET /api/confirmacion/todas - todas las confirmaciones del día (admin)
+// GET /api/confirmacion/todas - todas las confirmaciones (admin)
 router.get('/todas', verificarToken, soloAdmin, async (req, res) => {
   try {
-    const fecha = req.query.fecha || new Date().toISOString().split('T')[0];
+    let fecha = req.query.fecha;
+    if (!fecha) {
+      const manana = new Date(); manana.setDate(manana.getDate() + 1);
+      fecha = manana.toISOString().split('T')[0];
+    }
     const menu = await Menu.findOne({ where: { fecha } });
     if (!menu) return res.json([]);
     const lista = await Confirmacion.findAll({

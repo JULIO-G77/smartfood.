@@ -32,10 +32,10 @@ const Api = {
 
   // Auth
   login:    (correo, password)       => Api.post('/auth/login', { correo, password }),
-  register: (datos)                  => Api.post('/auth/register', datos),
 
   // Menú
-  menuHoy:   ()     => Api.get('/menu'),
+  menuManana: ()    => Api.get('/menu'),
+  menuHoy:    ()    => Api.get('/menu/hoy'),
   menuSemana: ()    => Api.get('/menu/semana'),
   menusTodos: ()    => Api.get('/menu/todos'),
   crearMenu:  (d)   => Api.post('/menu', d),

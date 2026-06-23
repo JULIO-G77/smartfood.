@@ -48,35 +48,6 @@ async function doLogin(e) {
   }
 }
 
-// ====== REGISTRO ======
-async function doRegister(e) {
-  if (e) e.preventDefault();
-  const nombre      = document.getElementById('reg-nombre').value.trim();
-  const correo      = document.getElementById('reg-correo').value.trim();
-  const password    = document.getElementById('reg-pass').value;
-  const password2   = document.getElementById('reg-pass2').value;
-  const curso       = document.getElementById('reg-curso').value;
-  const ciudad      = document.getElementById('reg-ciudad').value.trim();
-  const alergias    = document.getElementById('reg-alergias').value.trim();
-  const preferencias= document.getElementById('reg-prefs').value;
-
-  if (!nombre || !correo || !password || !curso) { Utils.toast('Completa todos los campos obligatorios', 'warning', 'reg-toast'); return; }
-  if (password !== password2) { Utils.toast('Las contraseñas no coinciden', 'danger', 'reg-toast'); return; }
-  if (password.length < 6) { Utils.toast('La contraseña debe tener al menos 6 caracteres', 'warning', 'reg-toast'); return; }
-
-  try {
-    document.getElementById('btn-register').disabled = true;
-    await Api.register({ nombre, correo, password, curso, ciudad, alergias, preferencias });
-    Utils.toast('¡Cuenta creada! Ahora inicia sesión.', 'success', 'reg-toast');
-    setTimeout(() => showPage('login'), 2000);
-  } catch (err) {
-    Utils.toast(err.message, 'danger', 'reg-toast');
-  } finally {
-    const btn = document.getElementById('btn-register');
-    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-user-plus"></i> Crear cuenta'; }
-  }
-}
-
 // ====== LOGOUT ======
 function logout() {
   Utils.clearSession();

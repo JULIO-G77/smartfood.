@@ -37,7 +37,7 @@ router.get('/estadisticas', verificarToken, soloAdmin, async (req, res) => {
 router.get('/semanal', verificarToken, soloAdmin, async (req, res) => {
   try {
     const hoy = new Date();
-    const lunes = new Date(hoy); lunes.setDate(hoy.getDate() - hoy.getDay() + 1);
+    const lunes = new Date(hoy); lunes.setDate(hoy.getDate() - ((hoy.getDay() + 6) % 7));
     const viernes = new Date(lunes); viernes.setDate(lunes.getDate() + 4);
     const datos = await sequelize.query(`
       SELECT m.fecha, m.plato_principal,

@@ -37,90 +37,7 @@
           <i class="ti ti-login"></i> Ingresar
         </button>
       </form>
-      <div class="auth-footer">
-        ¿No tienes cuenta? <button onclick="showPage('register')">Regístrate aquí</button>
-      </div>
-      <div class="demo-box">
-        <strong>Cuentas de prueba:</strong><br>
-        Admin: <code>admin@smartfood.co</code> / <code>admin123</code><br>
-        Estudiante: <code>maria@smartfood.co</code> / <code>est123</code>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ======================================================
-     PÁGINA: REGISTRO
-====================================================== -->
-<div id="page-register" class="page">
-  <div class="auth-container">
-    <div class="auth-card" style="max-width:520px">
-      <div class="auth-logo">
-        <div class="auth-logo-icon"><i class="ti ti-leaf"></i></div>
-        <div class="auth-logo-name">SmartFood</div>
-        <div class="auth-logo-sub">Crear cuenta nueva</div>
-      </div>
-      <h2 class="auth-title">Registro de estudiante</h2>
-      <div id="reg-toast"></div>
-      <form onsubmit="doRegister(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nombre completo *</label>
-            <input type="text" id="reg-nombre" placeholder="Ej: Juan Pérez" required>
-          </div>
-          <div class="form-group">
-            <label>Correo electrónico *</label>
-            <input type="email" id="reg-correo" placeholder="correo@ejemplo.com" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Contraseña *</label>
-            <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" required>
-          </div>
-          <div class="form-group">
-            <label>Confirmar contraseña *</label>
-            <input type="password" id="reg-pass2" placeholder="Repite tu contraseña" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Ciudad</label>
-            <input type="text" id="reg-ciudad" value="San Juan de Nepomuceno">
-          </div>
-          <div class="form-group">
-            <label>Curso / Grado *</label>
-            <select id="reg-curso" required>
-              <option value="">Selecciona tu grado...</option>
-              <option>6°A</option><option>6°B</option>
-              <option>7°A</option><option>7°B</option>
-              <option>8°A</option><option>8°B</option>
-              <option>9°A</option><option>9°B</option>
-              <option>10°A</option><option>10°B</option>
-              <option>11°A</option><option>11°B</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Alergias alimenticias</label>
-          <input type="text" id="reg-alergias" placeholder="Ej: mariscos, gluten, lactosa (opcional)">
-        </div>
-        <div class="form-group">
-          <label>Preferencias alimenticias</label>
-          <select id="reg-prefs">
-            <option value="ninguna">Sin preferencias especiales</option>
-            <option value="vegetariano">Vegetariano</option>
-            <option value="vegano">Vegano</option>
-            <option value="sin-gluten">Sin gluten</option>
-          </select>
-        </div>
-        <button type="submit" id="btn-register" class="btn btn-primary btn-block btn-lg">
-          <i class="ti ti-user-plus"></i> Crear cuenta
-        </button>
-      </form>
-      <div class="auth-footer">
-        ¿Ya tienes cuenta? <button onclick="showPage('login')">Inicia sesión</button>
-      </div>
+      
     </div>
   </div>
 </div>
@@ -161,7 +78,6 @@
           <p id="stu-fecha"></p>
         </div>
         <div id="toast-container" style="display:none"></div>
-        <div id="adm-toast" style="display:none"></div>
         <div id="dash-menu-area">
           <div class="card">
             <div class="card-title"><i class="ti ti-calendar"></i> Menú de hoy — <span id="dash-menu-fecha"></span> &nbsp;<span id="dash-estado"></span></div>
@@ -189,7 +105,7 @@
 
       <!-- Confirmación -->
       <div data-sub="confirmacion" style="display:none">
-        <div class="page-header"><h1><i class="ti ti-check" style="color:var(--primary)"></i> Confirmar asistencia</h1><p>Indica si vas a comer en el comedor</p></div>
+        <div class="page-header"><h1><i class="ti ti-check" style="color:var(--primary)"></i> Confirmar asistencia</h1><p>Confirma si vas a comer mañana en el comedor (antes de las 6:00 p.m.)</p></div>
         <div id="conf-toast" style="display:none"></div>
         <div id="conf-menu-area">
           <div class="card">
@@ -376,7 +292,7 @@
 
       <!-- Confirmaciones -->
       <div data-admin="confirmaciones" style="display:none">
-        <div class="page-header"><h1>Confirmaciones del día</h1><p>Estado de asistencia de todos los estudiantes</p></div>
+        <div class="page-header"><h1>Confirmaciones</h1><p>Estado de asistencia — <span id="adm-conf-fecha">mañana</span></p></div>
         <div class="card">
           <div class="table-wrap">
             <table>

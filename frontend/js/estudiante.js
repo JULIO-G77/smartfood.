@@ -25,27 +25,55 @@ async function actualizarBadgeNotifs() {
 
 // ====== DASHBOARD ======
 async function cargarDashboard() {
+  let html = '';
+
+  // Menú de hoy (solo lectura, gris)
   try {
-    const menu = await Api.menuHoy();
-    menuActual = menu;
-    document.getElementById('dash-menu-fecha').textContent = Utils.fechaES(menu.fecha);
-    document.getElementById('dash-entrada').textContent    = menu.entrada;
-    document.getElementById('dash-principal').textContent  = menu.plato_principal;
-    document.getElementById('dash-bebida').textContent     = menu.bebida;
-    document.getElementById('dash-postre').textContent     = menu.postre;
-    // Estado de confirmación del estudiante
-    const estado = await Api.miEstado(menu.id_menu);
-    const elEstado = document.getElementById('dash-estado');
-    if (estado.estado === 'confirmado') elEstado.innerHTML = '<span class="badge badge-green">✓ Confirmado</span>';
-    else if (estado.estado === 'cancelado') elEstado.innerHTML = '<span class="badge badge-red">✗ Cancelado</span>';
-    else elEstado.innerHTML = '<span class="badge badge-amber">Pendiente</span>';
-    // Conteo
-    const conteo = await Api.conteo(menu.id_menu);
-    document.getElementById('dash-conteo').textContent = `${conteo.confirmados} / ${conteo.total}`;
-    document.getElementById('dash-prog').style.width = `${Math.round(conteo.confirmados / conteo.total * 100)}%`;
-  } catch (e) {
-    document.getElementById('dash-menu-area').innerHTML = `<div class="alert alert-info"><i class="ti ti-info-circle"></i> No hay menú publicado para hoy.</div>`;
+    const hoy = await Api.menuHoy();
+    html += `
+      <div class="card" style="opacity:.65">
+        <div class="card-title"><i class="ti ti-calendar"></i> Menú de hoy — <span>${Utils.fechaES(hoy.fecha)}</span> <span class="badge badge-gray">Pasado</span></div>
+        <div class="menu-item"><span class="menu-item-label">Entrada</span><span class="menu-item-val">${hoy.entrada}</span></div>
+        <div class="menu-item"><span class="menu-item-label">Plato principal</span><span class="menu-item-val">${hoy.plato_principal}</span></div>
+        <div class="menu-item"><span class="menu-item-label">Bebida</span><span class="menu-item-val">${hoy.bebida}</span></div>
+        <div class="menu-item"><span class="menu-item-label">Postre</span><span class="menu-item-val">${hoy.postre}</span></div>
+      </div>`;
+  } catch (_) {
+    html += `<div class="card" style="opacity:.65"><div class="alert alert-info"><i class="ti ti-info-circle"></i> No hay menú registrado para hoy.</div></div>`;
   }
+
+  // Menú de mañana (para confirmar)
+  try {
+    const menu = await Api.menuManana();
+    menuActual = menu;
+    const estado = await Api.miEstado(menu.id_menu);
+    const conteo = await Api.conteo(menu.id_menu);
+    const pct = conteo.total > 0 ? Math.round(conteo.confirmados / conteo.total * 100) : 0;
+    let badgeHTML = '';
+    if (estado.estado === 'confirmado') badgeHTML = '<span class="badge badge-green">✓ Confirmado</span>';
+    else if (estado.estado === 'cancelado') badgeHTML = '<span class="badge badge-red">✗ Cancelado</span>';
+    else badgeHTML = '<span class="badge badge-amber">Pendiente</span>';
+
+    html += `
+      <div class="card" style="border-left:3px solid var(--primary)">
+        <div class="card-title"><i class="ti ti-calendar"></i> Menú de mañana — <span>${Utils.fechaES(menu.fecha)}</span> &nbsp;${badgeHTML}</div>
+        <div class="menu-item"><span class="menu-item-label">Entrada</span><span class="menu-item-val">${menu.entrada}</span></div>
+        <div class="menu-item"><span class="menu-item-label">Plato principal</span><span class="menu-item-val">${menu.plato_principal}</span></div>
+        <div class="menu-item"><span class="menu-item-label">Bebida</span><span class="menu-item-val">${menu.bebida}</span></div>
+        <div class="menu-item"><span class="menu-item-label">Postre</span><span class="menu-item-val">${menu.postre}</span></div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-success" onclick="goSub('confirmacion')"><i class="ti ti-check"></i> Ir a confirmar asistencia</button>
+        </div>
+        <div style="margin-top:14px">
+          <p style="font-size:13px;color:var(--text-sec);margin-bottom:6px">Confirmados: <strong>${conteo.confirmados} / ${conteo.total}</strong></p>
+          <div class="progress"><div class="progress-bar success" style="width:${pct}%"></div></div>
+        </div>
+      </div>`;
+  } catch (e) {
+    html += `<div class="card"><div class="alert alert-info"><i class="ti ti-info-circle"></i> No hay menú publicado para mañana todavía.</div></div>`;
+  }
+
+  document.getElementById('dash-menu-area').innerHTML = html;
 }
 
 // ====== MENÚ SEMANAL ======
@@ -69,7 +97,7 @@ async function cargarMenuSemana() {
 // ====== CONFIRMACIÓN ======
 async function cargarConfirmacion() {
   try {
-    const menu = await Api.menuHoy();
+    const menu = await Api.menuManana();
     menuActual = menu;
     document.getElementById('conf-fecha').textContent     = Utils.fechaES(menu.fecha);
     document.getElementById('conf-entrada').textContent   = menu.entrada;
@@ -79,10 +107,11 @@ async function cargarConfirmacion() {
     const estado = await Api.miEstado(menu.id_menu);
     actualizarBotonesConfirmacion(estado.estado);
     const conteo = await Api.conteo(menu.id_menu);
+    const pct = conteo.total > 0 ? Math.round(conteo.confirmados / conteo.total * 100) : 0;
     document.getElementById('conf-conteo-num').textContent = `${conteo.confirmados} de ${conteo.total}`;
-    document.getElementById('conf-prog').style.width = `${Math.round(conteo.confirmados / conteo.total * 100)}%`;
+    document.getElementById('conf-prog').style.width = `${pct}%`;
   } catch (e) {
-    document.getElementById('conf-menu-area').innerHTML = `<div class="alert alert-info"><i class="ti ti-info-circle"></i> No hay menú disponible para confirmar.</div>`;
+    document.getElementById('conf-menu-area').innerHTML = `<div class="alert alert-info"><i class="ti ti-info-circle"></i> No hay menú disponible para mañana. El administrador debe publicarlo primero.</div>`;
   }
 }
 
@@ -104,8 +133,9 @@ async function accionConfirmar() {
     actualizarBotonesConfirmacion('confirmado');
     Utils.toast('Tu asistencia fue registrada exitosamente 🎉', 'success', 'conf-toast');
     const conteo = await Api.conteo(menuActual.id_menu);
+    const pct = conteo.total > 0 ? Math.round(conteo.confirmados / conteo.total * 100) : 0;
     document.getElementById('conf-conteo-num').textContent = `${conteo.confirmados} de ${conteo.total}`;
-    document.getElementById('conf-prog').style.width = `${Math.round(conteo.confirmados / conteo.total * 100)}%`;
+    document.getElementById('conf-prog').style.width = `${pct}%`;
     actualizarBadgeNotifs();
   } catch (e) { Utils.toast(e.message, 'danger', 'conf-toast'); }
 }

@@ -195,6 +195,9 @@ async function cargarConfirmacionesAdmin() {
   const tbody = document.getElementById('adm-conf-tbody');
   tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-sec)">Cargando...</td></tr>';
   try {
+    const manana = new Date(); manana.setDate(manana.getDate() + 1);
+    const fechaLabel = document.getElementById('adm-conf-fecha');
+    if (fechaLabel) fechaLabel.textContent = Utils.fechaES(manana.toISOString().split('T')[0]);
     const lista = await Api.todasConfirm();
     tbody.innerHTML = lista.length ? lista.map(c => `
       <tr>

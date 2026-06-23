@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const morgan = require('morgan');
+const fs = require('fs');
 require('dotenv').config();
 
 const sequelize = require('./config/database');
@@ -12,6 +14,11 @@ const app = express();
 app.use(cors({ origin: '*', methods: ['GET','POST','PUT','DELETE'], allowedHeaders: ['Content-Type','Authorization'] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Morgan: log de peticiones HTTP
+app.use(morgan('dev'));
+// Guardar logs en archivo
+const logStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+app.use(morgan('combined', { stream: logStream }));
 
 // Servir frontend estático
 app.use(express.static(path.join(__dirname, '../frontend')));
