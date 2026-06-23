@@ -7,11 +7,12 @@ const sequelize = require('../config/database');
 // GET /api/reportes/estadisticas - stats generales
 router.get('/estadisticas', verificarToken, soloAdmin, async (req, res) => {
   try {
-    const hoy = new Date().toISOString().split('T')[0];
-    const menuHoy = await Menu.findOne({ where: { fecha: hoy } });
+    const manana = new Date(); manana.setDate(manana.getDate() + 1);
+    const fecha = manana.toISOString().split('T')[0];
+    const menu = await Menu.findOne({ where: { fecha } });
     const totalEstudiantes = await Estudiante.count();
-    const confirmadosHoy = menuHoy ? await Confirmacion.count({ where: { id_menu: menuHoy.id_menu, estado: 'confirmado' } }) : 0;
-    const canceladosHoy = menuHoy ? await Confirmacion.count({ where: { id_menu: menuHoy.id_menu, estado: 'cancelado' } }) : 0;
+    const confirmadosHoy = menu ? await Confirmacion.count({ where: { id_menu: menu.id_menu, estado: 'confirmado' } }) : 0;
+    const canceladosHoy = menu ? await Confirmacion.count({ where: { id_menu: menu.id_menu, estado: 'cancelado' } }) : 0;
     const porcentaje = totalEstudiantes > 0 ? ((confirmadosHoy / totalEstudiantes) * 100).toFixed(1) : 0;
 
     // Últimos 7 días
