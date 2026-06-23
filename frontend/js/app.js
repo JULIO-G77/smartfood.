@@ -48,6 +48,12 @@ async function doLogin(e) {
   }
 }
 
+// ====== SIDEBAR MÓVIL ======
+function toggleSidebar() {
+  document.querySelectorAll('.sidebar').forEach(s => s.classList.toggle('open'));
+  document.querySelectorAll('.sidebar-backdrop').forEach(b => b.classList.toggle('open'));
+}
+
 // ====== LOGOUT ======
 function logout() {
   Utils.clearSession();

@@ -47,7 +47,10 @@
 ====================================================== -->
 <div id="page-estudiante" class="page">
   <nav class="navbar">
-    <div class="navbar-brand"><i class="ti ti-leaf"></i> SmartFood</div>
+    <div class="navbar-brand">
+      <button class="btn btn-sm btn-icon sidebar-toggle" onclick="toggleSidebar()" title="Menú" style="display:none"><i class="ti ti-menu-2"></i></button>
+      <i class="ti ti-leaf"></i> SmartFood
+    </div>
     <div class="navbar-right">
       <div class="navbar-notif" onclick="goSub('notifs')" title="Notificaciones">
         <i class="ti ti-bell"></i>
@@ -58,17 +61,18 @@
       <button class="btn btn-sm" onclick="logout()"><i class="ti ti-logout"></i> Salir</button>
     </div>
   </nav>
-  <div class="layout">
+    <div class="layout">
     <aside class="sidebar">
-      <button class="sidebar-link" data-goto="dashboard" onclick="goSub('dashboard')"><i class="ti ti-home"></i> Inicio</button>
-      <button class="sidebar-link" data-goto="menu" onclick="goSub('menu')"><i class="ti ti-tool"></i> Menú semanal</button>
-      <button class="sidebar-link" data-goto="confirmacion" onclick="goSub('confirmacion')"><i class="ti ti-check"></i> Confirmar asistencia</button>
-      <button class="sidebar-link" data-goto="historial" onclick="goSub('historial')"><i class="ti ti-history"></i> Mi historial</button>
-      <button class="sidebar-link" data-goto="notifs" onclick="goSub('notifs')"><i class="ti ti-bell"></i> Notificaciones</button>
+      <button class="sidebar-link" data-goto="dashboard" onclick="goSub('dashboard');toggleSidebar()"><i class="ti ti-home"></i> Inicio</button>
+      <button class="sidebar-link" data-goto="menu" onclick="goSub('menu');toggleSidebar()"><i class="ti ti-tool"></i> Menú semanal</button>
+      <button class="sidebar-link" data-goto="confirmacion" onclick="goSub('confirmacion');toggleSidebar()"><i class="ti ti-check"></i> Confirmar asistencia</button>
+      <button class="sidebar-link" data-goto="historial" onclick="goSub('historial');toggleSidebar()"><i class="ti ti-history"></i> Mi historial</button>
+      <button class="sidebar-link" data-goto="notifs" onclick="goSub('notifs');toggleSidebar()"><i class="ti ti-bell"></i> Notificaciones</button>
       <div class="sidebar-divider"></div>
-      <button class="sidebar-link" data-goto="perfil" onclick="goSub('perfil')"><i class="ti ti-user"></i> Mi perfil</button>
-      <button class="sidebar-link" onclick="logout()"><i class="ti ti-logout"></i> Cerrar sesión</button>
+      <button class="sidebar-link" data-goto="perfil" onclick="goSub('perfil');toggleSidebar()"><i class="ti ti-user"></i> Mi perfil</button>
+      <button class="sidebar-link" onclick="logout();toggleSidebar()"><i class="ti ti-logout"></i> Cerrar sesión</button>
     </aside>
+    <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
     <main class="main-content">
 
       <!-- Dashboard -->
@@ -210,24 +214,28 @@
 ====================================================== -->
 <div id="page-admin" class="page">
   <nav class="navbar">
-    <div class="navbar-brand"><i class="ti ti-leaf"></i> SmartFood <span class="badge badge-amber" style="margin-left:6px;font-size:10px">Admin</span></div>
+    <div class="navbar-brand">
+      <button class="btn btn-sm btn-icon sidebar-toggle" onclick="toggleSidebar()" title="Menú" style="display:none"><i class="ti ti-menu-2"></i></button>
+      <i class="ti ti-leaf"></i> SmartFood <span class="badge badge-amber" style="margin-left:6px;font-size:10px">Admin</span>
+    </div>
     <div class="navbar-right">
       <div class="navbar-avatar" style="background:#FAEEDA;color:#854F0B" id="admin-avatar">A</div>
       <span class="navbar-name" id="admin-name"></span>
       <button class="btn btn-sm" onclick="logout()"><i class="ti ti-logout"></i> Salir</button>
     </div>
   </nav>
-  <div class="layout">
+    <div class="layout">
     <aside class="sidebar">
-      <button class="sidebar-link" data-admin-goto="panel" onclick="goAdmin('panel')"><i class="ti ti-dashboard"></i> Panel</button>
-      <button class="sidebar-link" data-admin-goto="usuarios" onclick="goAdmin('usuarios')"><i class="ti ti-users"></i> Usuarios</button>
-      <button class="sidebar-link" data-admin-goto="menus" onclick="goAdmin('menus')"><i class="ti ti-tool"></i> Menús</button>
-      <button class="sidebar-link" data-admin-goto="confirmaciones" onclick="goAdmin('confirmaciones')"><i class="ti ti-check"></i> Confirmaciones</button>
-      <button class="sidebar-link" data-admin-goto="reportes" onclick="goAdmin('reportes')"><i class="ti ti-chart-bar"></i> Reportes</button>
-      <button class="sidebar-link" data-admin-goto="notifs" onclick="goAdmin('notifs')"><i class="ti ti-bell"></i> Notificaciones</button>
+      <button class="sidebar-link" data-admin-goto="panel" onclick="goAdmin('panel');toggleSidebar()"><i class="ti ti-dashboard"></i> Panel</button>
+      <button class="sidebar-link" data-admin-goto="usuarios" onclick="goAdmin('usuarios');toggleSidebar()"><i class="ti ti-users"></i> Usuarios</button>
+      <button class="sidebar-link" data-admin-goto="menus" onclick="goAdmin('menus');toggleSidebar()"><i class="ti ti-tool"></i> Menús</button>
+      <button class="sidebar-link" data-admin-goto="confirmaciones" onclick="goAdmin('confirmaciones');toggleSidebar()"><i class="ti ti-check"></i> Confirmaciones</button>
+      <button class="sidebar-link" data-admin-goto="reportes" onclick="goAdmin('reportes');toggleSidebar()"><i class="ti ti-chart-bar"></i> Reportes</button>
+      <button class="sidebar-link" data-admin-goto="notifs" onclick="goAdmin('notifs');toggleSidebar()"><i class="ti ti-bell"></i> Notificaciones</button>
       <div class="sidebar-divider"></div>
-      <button class="sidebar-link" onclick="logout()"><i class="ti ti-logout"></i> Cerrar sesión</button>
+      <button class="sidebar-link" onclick="logout();toggleSidebar()"><i class="ti ti-logout"></i> Cerrar sesión</button>
     </aside>
+    <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
     <main class="main-content">
       <div id="adm-toast" style="display:none"></div>
 
