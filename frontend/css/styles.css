@@ -172,7 +172,8 @@ tbody tr:hover td { background: var(--bg-sec); }
 
 /* Auth pages */
 .auth-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: linear-gradient(135deg, #E6F1FB 0%, #f0f7ff 50%, #ffffff 100%); }
-.auth-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); }
+.auth-card .form-group { text-align: left; }
+.auth-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; width: 100%; max-width: 440px; box-shadow: var(--shadow-lg); text-align: center; }
 .auth-logo { text-align: center; margin-bottom: 24px; }
 .auth-logo-icon { margin: 0 auto 10px; }
 .auth-logo-icon img { width: 140px; height: auto; display: block; }
