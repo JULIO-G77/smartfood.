@@ -48,7 +48,7 @@ a:hover { text-decoration: underline; }
   position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow);
 }
 .navbar-brand { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; color: var(--primary); }
-.navbar-brand i { font-size: 20px; }
+.navbar-logo { width: 28px; height: 28px; object-fit: contain; }
 .navbar-right { display: flex; align-items: center; gap: 12px; }
 .navbar-notif { position: relative; cursor: pointer; color: var(--text-sec); font-size: 20px; line-height: 1; }
 .notif-badge { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%; background: #E24B4A; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
