@@ -248,3 +248,68 @@ Esto permite ver:
 - Cuánto tarda cada petición
 
 Además se guarda todo en `backend/access.log` para revisarlo después.
+
+---
+
+## [25/06/2026]
+
+### 14. Menú lateral responsive (hamburguesa)
+
+**Qué se hizo:**
+En `index.html`:
+- Se agregó un botón ☰ (`sidebar-toggle`) en el navbar (visible solo en mobile)
+- Se agregó un `div.sidebar-backdrop` (fondo oscuro semitransparente) que se activa al abrir el menú
+- Todos los `onclick` del sidebar ahora también llaman `toggleSidebar()` para cerrar el menú tras navegar
+
+En `js/app.js`:
+- Se agregó la función `toggleSidebar()` que alterna la clase `open` en sidebar y backdrop
+
+En `css/styles.css`:
+- El sidebar pasa a `position: fixed` en mobile, oculto a la izquierda con `transform: translateX(-100%)`
+- Al abrirse (`sidebar.open`) se desliza con `transform: translateX(0)` y sombra
+- El backdrop aparece con opacidad
+
+**Para qué sirve:**
+En celulares, el sidebar ocupaba todo el ancho y rompía el diseño. Ahora se oculta detrás del borde izquierdo y solo se ve cuando el usuario toca el ☰. Tocar una opción o el fondo oscuro lo cierra automáticamente.
+
+---
+
+### 15. Arreglar estadísticas del panel admin
+
+**Qué se hizo:**
+En `routes/reportes.js`, el endpoint `GET /api/reportes/estadisticas` buscaba el menú de HOY para contar confirmados/cancelados. Se cambió para buscar el menú de MAÑANA:
+
+```js
+// Antes:
+const hoy = new Date().toISOString().split('T')[0];
+const menuHoy = await Menu.findOne({ where: { fecha: hoy } });
+
+// Después:
+const manana = new Date(); manana.setDate(manana.getDate() + 1);
+const fecha = manana.toISOString().split('T')[0];
+const menu = await Menu.findOne({ where: { fecha } });
+```
+
+En `index.html` se actualizaron las etiquetas:
+- "Confirmados hoy" → "Confirmados mañana"
+- "Cancelados hoy" → "Cancelados mañana"
+- "Confirmaciones de hoy" → "Confirmaciones de mañana" (panel y reportes)
+
+**Para qué sirve:**
+El panel siempre mostraba `Confirmados: 0`, `Cancelados: 0` y `Sin responder: N` aunque los estudiantes ya hubieran confirmado. El error era que contaba confirmaciones sobre el menú de HOY, pero los estudiantes confirman para MAÑANA. Al no haber menú para hoy, todos los contadores daban cero.
+
+---
+
+### 16. Agregar logo SmartFood
+
+**Qué se hizo:**
+- Se copió el archivo `logo SmartFood 1.png` a `frontend/images/logo.png`
+- En `index.html`:
+  - Login: se reemplazó `<i class="ti ti-leaf"></i>` por `<img src="images/logo.png">` en `auth-logo-icon`
+  - Navbar estudiante: el ícono de hoja por la imagen con clase `navbar-logo`
+  - Navbar admin: igual
+- En `css/styles.css` se agregó `.navbar-logo { width: 28px; height: 28px; object-fit: contain; }`
+- Se agregó `<link rel="icon" href="images/logo.png">` en el `<head>`
+
+**Para qué sirve:**
+La página se veía genérica con el ícono de hoja de Tabler Icons. Ahora muestra el logo real del proyecto, dando identidad visual.
